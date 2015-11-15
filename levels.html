@@ -1,0 +1,20 @@
+<script>
+
+var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+var getStationData = function(id) {
+  var root = 'https://flood-warning-information.service.gov.uk/station/'
+  xhttp.open('GET', root + id, false);
+  xhttp.send();
+  return xhttp.responseText;
+}
+
+var stations = ['8097'];
+document.write(getStationData(stations[0]));
+</script>
