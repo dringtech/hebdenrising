@@ -1,0 +1,23 @@
+{
+  "name": "hebdenrising",
+  "version": "1.0.0",
+  "description": "Tools to help coordinate flood response for Hebden Bridge and the Upper Calder Valley",
+  "main": "scrapea.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dringtech/hebdenrising.git"
+  },
+  "author": "Giles Dring <giles@dringtech.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dringtech/hebdenrising/issues"
+  },
+  "homepage": "https://github.com/dringtech/hebdenrising#readme",
+  "dependencies": {
+    "q": "^1.4.1",
+    "scrape": "^0.2.3"
+  }
+}
