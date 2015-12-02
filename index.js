@@ -2,6 +2,8 @@ var scrapea = require('./scrapea');
 var q = require('q');
 
 exports.handler = function(event, context) {
+  console.log(JSON.stringify(event, null, 2));
+
   // console.log('value1 =', event.key1);
   // console.log('value2 =', event.key2);
   // console.log('value3 =', event.key3);
