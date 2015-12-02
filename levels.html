@@ -9,7 +9,7 @@ if (window.XMLHttpRequest) {
 }
 
 var getStationData = function(id) {
-  var root = 'https://3f3gbw9je8.execute-api.eu-west-1.amazonaws.com/prod/scrapeRiverLevels/'
+  var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/'
   xhttp.open('GET', root + id, false);
   xhttp.send();
   return xhttp.responseText;
