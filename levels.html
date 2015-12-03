@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/2.0.3/q.min.js" charset="utf-8"></script>
 
     <title>Hebden Rising</title>
   </head>
@@ -22,17 +23,13 @@
 
           <h1 id="project_title">Hebden Rising</h1>
           <h2 id="project_tagline">Information to coordinate Hebden Bridge and the Upper Calder Valley</h2>
-
-<!--            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/dringtech/hebdenrising/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/dringtech/hebdenrising/tarball/master">Download this project as a tar.gz file</a>
-            </section> -->
         </header>
     </div>
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+        <svg id='graph'></svg>
 
       </section>
     </div>
@@ -44,9 +41,6 @@
         <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-
-
-
   </body>
 </html>
 
@@ -61,13 +55,15 @@ if (window.XMLHttpRequest) {
     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
 }
 
-var getStationData = function(id) {
-  var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/'
-  xhttp.open('GET', root + id, false);
+var getStationData = function(id, callback) {
+  var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/';
+  xhttp.open('GET', root + id, true);
   xhttp.send();
   return xhttp.responseText;
 }
 
 var stations = [8097];
 window.alert(getStationData(stations[0]));
+var svg = d3.select('svg#graph');
+console.log(svg);
 </script>
