@@ -4,7 +4,10 @@
   "description": "Tools to help coordinate flood response for Hebden Bridge and the Upper Calder Valley",
   "main": "scrapea.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "zip": "zip -r aws_lambda.zip node_modules/ scrapea.js index.js",
+    "lambda-list": "aws lambda list-functions",
+    "lambda-update": "aws lambda update-function-code --function-name scrapeRiverLevels --zip-file fileb://./aws_lambda.zip --publish"
   },
   "repository": {
     "type": "git",
