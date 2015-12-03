@@ -57,7 +57,7 @@ if (window.XMLHttpRequest) {
 
 var getStationData = function(id, callback) {
   var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/';
-  var deferred = Q.deferred();
+  var deferred = Q.defer();
   xhttp.onreadystatechange = function() {
     var DONE = this.DONE || 4;
     if (this.readyState === DONE){
