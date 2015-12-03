@@ -30,7 +30,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <svg id='graph'></svg>
-
+        <div id='results'></div>
       </section>
     </div>
 
@@ -55,12 +55,13 @@ if (window.XMLHttpRequest) {
     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
 }
 
+var results = {};
 var getStationData = function(id, callback) {
   var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/';
   xhttp.onreadystatechange = function() {
     var DONE = this.DONE || 4;
     if (this.readyState === DONE){
-      alert(this.responseText);
+      results[id] = JSON.parse(this.responseText);
     }
   };
   xhttp.open('GET', root + id, true);
@@ -70,6 +71,9 @@ var getStationData = function(id, callback) {
 
 var stations = [8097];
 getStationData(stations[0]);
-var svg = d3.select('svg#graph');
+var svg = d3.select('svg#graph')[0];
+var res = d3.select('div#results')[0];
 console.log(svg);
+console.log(res);
+res.text(results);
 </script>
