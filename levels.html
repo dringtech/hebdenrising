@@ -111,9 +111,9 @@ Q.all(stations.map(getStationData))
         "time": x.value_timestamps.map(timeParse),
         "level": x.processed_values};
     });
-    var xScale = d3.scale.linear()
+    var xScale = d3.time.scale()
       .range([DIMENSIONS.MARGINS.left, DIMENSIONS.WIDTH - DIMENSIONS.MARGINS.right])
-      .domain([0, 10]);
+      .domain([new Date("2015-12-01"), new Date("2015-12-04")]);
     var yScale = d3.scale.linear()
       .range([DIMENSIONS.HEIGHT - DIMENSIONS.MARGINS.top, DIMENSIONS.MARGINS.bottom])
       .domain([0, 10]);
