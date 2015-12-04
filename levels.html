@@ -93,8 +93,8 @@ var stations = [8205,8343,8097,8048,8152];
 Q.all(stations.map(getStationData))
   .then(function(result) {
     console.log(JSON.stringify(result, null, 2));
-    console.log(result[0].value_timestamps[0]);
     var data = result.map(function(x) { return {"name": x.external_name, "id": x.rloi_id, "time": x.value_timestamps.map(timeParse), "level": x.processed_values}; });
+    console.log(data[0].time[0]);
     res.text(JSON.stringify(data,null,2));
   });
 </script>
