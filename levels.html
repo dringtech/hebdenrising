@@ -109,8 +109,8 @@ Q.all(stations.map(getStationData))
       return {
         "name": x.external_name,
         "id": x.rloi_id,
-        "time": x.value_timestamps.map(timeParse),
-        "level": x.processed_values};
+        "points": d3.zip( x.value_timestamps.map(timeParse), x.processed_values )
+      };
     });
     var xScale = d3.time.scale()
       .range([0, DIMENSIONS.WIDTH])
@@ -129,8 +129,8 @@ Q.all(stations.map(getStationData))
       .call(yAxis);
 
     var lineGen = d3.svg.line().interpolate("basis")
-        .x(function(d) { return xScale(d.time); })
-        .y(function(d) { return yScale(d.level); });
+        .x(function(d) { return xScale(d[0]); })
+        .y(function(d) { return yScale(d[1]); });
 
     plot.append('path')
       .attr('d', lineGen(data[0]))
