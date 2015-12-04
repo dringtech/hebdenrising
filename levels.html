@@ -120,11 +120,11 @@ Q.all(stations.map(getStationData))
     var xAxis = d3.svg.axis().scale(xScale);
     var yAxis = d3.svg.axis().scale(yScale).orient("left");
     svg.append("svg:g")
-      .classed("axis")
+      .classed("axis", true)
       .attr("transform", "translate(0," + (DIMENSIONS.HEIGHT - DIMENSIONS.MARGINS.bottom) + ")")
       .call(xAxis);
     svg.append("svg:g")
-      .classed("axis")
+      .classed("axis", true)
       .attr("transform", "translate(" + (DIMENSIONS.MARGINS.left) + ",0)")
       .call(yAxis);
 
