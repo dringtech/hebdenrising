@@ -58,6 +58,7 @@ var xhr = function() {
 
 var results = {};
 var getStationData = function(id) {
+  console.log('Getting data for station ', id);
   return Q.Promise(function(resolve, reject, notify) {
     var request = xhr();
     var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/';
