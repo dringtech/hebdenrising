@@ -134,17 +134,13 @@ Q.all(stations.map(getStationData))
         .x(function(d) { return xScale(d[0]); })
         .y(function(d) { return yScale(d[1]); });
 
-    plot.append('path')
-      .attr('d', lineGen(data[0].points))
-      .attr('stroke', 'green')
-      .attr('stroke-width', 1)
-      .attr('fill', 'none')
-    plot.append('path')
-        .attr('d', lineGen(data[1].points))
-        .attr('stroke', 'red')
+    data.map(function (d) {
+      plot.append('path')
+        .attr('d', lineGen(d.points))
+        .attr('stroke', 'green')
         .attr('stroke-width', 1)
-        .attr('fill', 'none')
-
+        .attr('fill', 'none');
+    })
 
     // series.domain(d3.keys(data.map(function(x) { return x.name; })));
     // var stations = series.domain().map(function(name) {
