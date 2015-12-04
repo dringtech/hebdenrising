@@ -100,8 +100,6 @@ var line = d3.svg.line()
     .y(function(d) { return y(d.level); });
 var stations = [8205,8343,8097,8048,8152];
 
-
-d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([2000,2010]),
 Q.all(stations.map(getStationData))
   .then(function(result) {
     console.log(JSON.stringify(result, null, 2));
