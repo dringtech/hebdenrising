@@ -88,7 +88,7 @@ var getStationData = function(id) {
 
 var svg = d3.select('svg#graph');
 var res = d3.select('div#results');
-var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse
+var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
 var stations = [8205,8343,8097,8048,8152];
 Q.all(stations.map(getStationData))
   .then(function(result) {
