@@ -88,8 +88,8 @@ var getStationData = function(id) {
   });
 }
 
-var svg = d3.select('svg#graph')[0];
-var res = d3.select('div#results')[0];
+var svg = d3.select('svg#graph');
+var res = d3.select('div#results');
 var stations = [8097];
 Q.all(stations.map(getStationData))
   .then(function(results) {
