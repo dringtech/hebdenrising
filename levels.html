@@ -95,7 +95,7 @@ var DIMENSIONS = {
 svg
   .attr("width", DIMENSIONS.WIDTH + DIMENSIONS.MARGINS.left + DIMENSIONS.MARGINS.right)
   .attr("height", DIMENSIONS.HEIGHT + DIMENSIONS.MARGINS.top + DIMENSIONS.MARGINS.bottom)
-  .append(g)
+  .append("g")
     .attr("transform", "translate(" + DIMENSIONS.MARGINS.left + "," + DIMENSIONS.MARGINS.top + ")");
 var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
 var series = d3.scale.category10()
