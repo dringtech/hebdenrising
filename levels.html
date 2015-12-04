@@ -71,6 +71,7 @@ var getStationData = function(id) {
 
     function onload() {
       if (request.status === 200) {
+        console.log('Got data for station ', id);
         resolve(JSON.parse(request.responseText));
       } else {
         reject(new Error("Status code was " + request.status));
