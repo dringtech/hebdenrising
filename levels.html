@@ -88,6 +88,12 @@ var getStationData = function(id) {
 
 var svg = d3.select('svg#graph');
 var res = d3.select('div#results');
+var DIMENSIONS = {
+  WIDTH: 1000, HEIGHT: 500,
+  MARGINS: {top: 20, right: 20, bottom: 20, left: 20 }
+};
+var xScale = d3.scale.linear().range([DIMENSIONS.MARGINS.left, DIMENSIONS.WIDTH - DIMENSIONS.MARGINS.right]);
+var yScale = d3.scale.linear().range([HEIGHT - DIMENSIONS.MARGINS.top, DIMENSIONS.MARGINS.bottom]);
 var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
 var series = d3.scale.category10()
 var line = d3.svg.line()
@@ -95,19 +101,43 @@ var line = d3.svg.line()
     .x(function(d) { return x(d.time); })
     .y(function(d) { return y(d.level); });
 var stations = [8205,8343,8097,8048,8152];
+
+
+d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([2000,2010]),
 Q.all(stations.map(getStationData))
   .then(function(result) {
     console.log(JSON.stringify(result, null, 2));
-    var data = result.map(function(x) { return {"name": x.external_name, "id": x.rloi_id, "time": x.value_timestamps.map(timeParse), "level": x.processed_values}; });
-    series.domain(d3.keys(data.map(function(x) { return x.name; })));
-    var stations = series.domain().map(function(name) {
+    var data = result.map(function(x) {
       return {
-        name: name,
-        values: data.map(function(d) {
-          return {date: d.date, temperature: +d[name]};
-        })
-      };
+        "name": x.external_name,
+        "id": x.rloi_id,
+        "time": x.value_timestamps.map(timeParse),
+        "level": x.processed_values};
     });
+    var xScale = d3.scale.linear()
+      .range([DIMENSIONS.MARGINS.left, DIMENSIONS.WIDTH - DIMENSIONS.MARGINS.right])
+      .domain([0, 10]);
+    var yScale = d3.scale.linear()
+      .range([HEIGHT - DIMENSIONS.MARGINS.top, DIMENSIONS.MARGINS.bottom])
+      .domain([0, 10]);
+    var xAxis = d3.svg.axis().scale(xScale),
+    var yAxis = d3.svg.axis().scale(yScale).orient("left");
+    svg.append("svg:g")
+      .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom)
+      .call(xAxis);
+    svg.append("svg:g")
+      .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+      .call(yAxis);
+
+    // series.domain(d3.keys(data.map(function(x) { return x.name; })));
+    // var stations = series.domain().map(function(name) {
+    //   return {
+    //     name: name,
+    //     values: data.map(function(d) {
+    //       return {date: d.date, temperature: +d[name]};
+    //     })
+    //   };
+    // });
     res.text(JSON.stringify(data,null,2));
   });
 </script>
