@@ -88,11 +88,12 @@ var getStationData = function(id) {
 
 var svg = d3.select('svg#graph');
 var res = d3.select('div#results');
+var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse
 var stations = [8205,8343,8097,8048,8152];
 Q.all(stations.map(getStationData))
   .then(function(result) {
     console.log(JSON.stringify(result, null, 2));
-    var data = result.map(function(x) { return {"name": x.external_name, "id": x.rloi_id, "time": x.value_timestamps, "level": x.processed_values}; });
+    var data = result.map(function(x) { return {"name": x.external_name, "id": x.rloi_id, "time": x.value_timestamps.map(timeParse), "level": x.processed_values}; });
     res.text(JSON.stringify(data,null,2));
   });
 </script>
