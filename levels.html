@@ -92,6 +92,7 @@ var DIMENSIONS = {
   WIDTH: 1000, HEIGHT: 500,
   MARGINS: {top: 20, right: 20, bottom: 20, left: 20 }
 };
+svg.attr("width", DIMENSIONS.WIDTH).attr("height", DIMENSIONS.HEIGHT);
 var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
 var series = d3.scale.category10()
 var line = d3.svg.line()
