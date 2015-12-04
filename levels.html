@@ -7,6 +7,7 @@
     <meta name="description" content="Hebden Rising : Information to coordinate Hebden Bridge and the Upper Calder Valley">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/graph.css">
 
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/1.4.1/q.min.js" charset="utf-8"></script>
@@ -121,15 +122,14 @@ Q.all(stations.map(getStationData))
     var yScale = d3.scale.linear()
       .range([DIMENSIONS.HEIGHT, 0])
       .domain([0, 10]);
-    var xAxis = d3.svg.axis().scale(xScale);
-    var yAxis = d3.svg.axis().scale(yScale).tickSize(DIMENSIONS.WIDTH).orient("left");
+    var xAxis = d3.svg.axis().scale(xScale).tickSize(10);
+    var yAxis = d3.svg.axis().scale(yScale).tickSize(10).orient("left");
     plot.append("g")
       .classed("axis", true)
       .attr("transform", "translate(0," + DIMENSIONS.HEIGHT + ")")
       .call(xAxis);
     plot.append("g")
       .classed("axis", true)
-      .attr("transform", "translate(" + DIMENSIONS.WIDTH + ", 0)")
       .call(yAxis);
 
     // series.domain(d3.keys(data.map(function(x) { return x.name; })));
