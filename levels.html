@@ -58,7 +58,6 @@ var xhr = function() {
 
 var results = {};
 var getStationData = function(id) {
-  console.log('Getting data for station ', id);
   return Q.Promise(function(resolve, reject, notify) {
     var request = xhr();
     var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/';
@@ -71,7 +70,6 @@ var getStationData = function(id) {
 
     function onload() {
       if (request.status === 200) {
-        console.log('Got data for station ', id);
         resolve(JSON.parse(request.responseText));
       } else {
         reject(new Error("Status code was " + request.status));
@@ -93,7 +91,6 @@ var res = d3.select('div#results');
 var stations = [8205,8343,8097,8048,8152];
 Q.all(stations.map(getStationData))
   .then(function(results) {
-    alert(JSON.stringify(results,null,2));
     res.text(JSON.stringify(results,null,2));
     console.log(JSON.stringify(results,null,2));
   });
