@@ -47,27 +47,43 @@
 
 <script>
 
-var xhttp;
-if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest();
+var xhr = function() {
+  if (window.XMLHttpRequest) {
+      return new XMLHttpRequest();
     } else {
-    // code for IE6, IE5
-    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-}
+      // code for IE6, IE5
+      return new ActiveXObject("Microsoft.XMLHTTP");
+  }
+};
 
 var results = {};
-var getStationData = function(id, callback) {
-  var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/';
-  var deferred = Q.defer();
-  xhttp.onreadystatechange = function() {
-    var DONE = this.DONE || 4;
-    if (this.readyState === DONE){
-      deferred.resolve(JSON.parse(this.responseText));
+var getStationData = function(id) {
+  return Q.Promise(function(resolve, reject, notify) {
+    var request = xhr();
+    var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/';
+
+    request.open("GET", root + id, true);
+    request.onload = onload;
+    request.onerror = onerror;
+    request.onprogress = onprogress;
+    request.send();
+
+    function onload() {
+      if (request.status === 200) {
+        resolve(JSON.parse(request.responseText));
+      } else {
+        reject(new Error("Status code was " + request.status));
+      }
     }
-  };
-  xhttp.open('GET', root + id, true);
-  xhttp.send();
-  return deferred.promise;
+
+    function onerror() {
+      reject(new Error("Can't XHR " + JSON.stringify(url)));
+    }
+
+    function onprogress(event) {
+      notify(event.loaded / event.total);
+    }
+  }
 }
 
 var stations = [8097];
