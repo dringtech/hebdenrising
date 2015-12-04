@@ -90,7 +90,7 @@ var getStationData = function(id) {
 
 var svg = d3.select('svg#graph');
 var res = d3.select('div#results');
-var stations = [8097];
+var stations = [8205,8343,8097,8048,8152];
 Q.all(stations.map(getStationData))
   .then(function(results) {
     alert(JSON.stringify(results,null,2));
