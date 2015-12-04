@@ -92,8 +92,6 @@ var DIMENSIONS = {
   WIDTH: 1000, HEIGHT: 500,
   MARGINS: {top: 20, right: 20, bottom: 20, left: 20 }
 };
-var xScale = d3.scale.linear().range([DIMENSIONS.MARGINS.left, DIMENSIONS.WIDTH - DIMENSIONS.MARGINS.right]);
-var yScale = d3.scale.linear().range([HEIGHT - DIMENSIONS.MARGINS.top, DIMENSIONS.MARGINS.bottom]);
 var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
 var series = d3.scale.category10()
 var line = d3.svg.line()
@@ -118,15 +116,15 @@ Q.all(stations.map(getStationData))
       .range([DIMENSIONS.MARGINS.left, DIMENSIONS.WIDTH - DIMENSIONS.MARGINS.right])
       .domain([0, 10]);
     var yScale = d3.scale.linear()
-      .range([HEIGHT - DIMENSIONS.MARGINS.top, DIMENSIONS.MARGINS.bottom])
+      .range([DIMENSIONS.HEIGHT - DIMENSIONS.MARGINS.top, DIMENSIONS.MARGINS.bottom])
       .domain([0, 10]);
     var xAxis = d3.svg.axis().scale(xScale);
     var yAxis = d3.svg.axis().scale(yScale).orient("left");
     svg.append("svg:g")
-      .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom))
+      .attr("transform", "translate(0," + (DIMENSIONS.HEIGHT - DIMENSIONS.MARGINS.bottom))
       .call(xAxis);
     svg.append("svg:g")
-      .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+      .attr("transform", "translate(" + (DIMENSIONS.MARGINS.left) + ",0)")
       .call(yAxis);
 
     // series.domain(d3.keys(data.map(function(x) { return x.name; })));
