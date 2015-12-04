@@ -86,11 +86,12 @@ var getStationData = function(id) {
   });
 }
 
-var stations = [8097];
-getStationData(stations[0]);
 var svg = d3.select('svg#graph')[0];
 var res = d3.select('div#results')[0];
-console.log(svg);
-console.log(res);
-res.text(results);
+var stations = [8097];
+Q.all(stations.map(getStationData))
+  .then(function(results) {
+    res.text(results);
+    console.log(results);
+  });
 </script>
