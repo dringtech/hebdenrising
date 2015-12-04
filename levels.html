@@ -105,6 +105,8 @@ var stations = [8205,8343,8097,8048,8152];
 Q.all(stations.map(getStationData))
   .then(function(result) {
     console.log(JSON.stringify(result, null, 2));
+    var dates = d3.merge(result.map(function(x) { return x.value_timestamps.map(timeParse) } ));
+    console.log(dates);
     var data = result.map(function(x) {
       return {
         "name": x.external_name,
@@ -135,8 +137,14 @@ Q.all(stations.map(getStationData))
     plot.append('path')
       .attr('d', lineGen(data[0].points))
       .attr('stroke', 'green')
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 1)
       .attr('fill', 'none')
+    plot.append('path')
+        .attr('d', lineGen(data[1].points))
+        .attr('stroke', 'red')
+        .attr('stroke-width', 1)
+        .attr('fill', 'none')
+
 
     // series.domain(d3.keys(data.map(function(x) { return x.name; })));
     // var stations = series.domain().map(function(name) {
