@@ -58,15 +58,16 @@ if (window.XMLHttpRequest) {
 var results = {};
 var getStationData = function(id, callback) {
   var root = 'https://poxbjh94c5.execute-api.eu-west-1.amazonaws.com/prod/levels/';
+  var deferred = Q.defer();
   xhttp.onreadystatechange = function() {
     var DONE = this.DONE || 4;
     if (this.readyState === DONE){
-      results[id] = JSON.parse(this.responseText);
+      deferred.resolve(JSON.parse(this.responseText));
     }
   };
   xhttp.open('GET', root + id, true);
-  // xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   xhttp.send();
+  return deferred.promise;
 }
 
 var stations = [8097];
