@@ -104,9 +104,8 @@ var stations = [8205,8343,8097,8048,8152];
 
 Q.all(stations.map(getStationData))
   .then(function(result) {
-    console.log(JSON.stringify(result, null, 2));
+    // console.log(JSON.stringify(result, null, 2));
     var dates = d3.merge(result.map(function(x) { return x.value_timestamps.map(timeParse) } ));
-    console.log(dates);
     var data = result.map(function(x) {
       return {
         "name": x.external_name,
@@ -116,7 +115,7 @@ Q.all(stations.map(getStationData))
     });
     var xScale = d3.time.scale()
       .range([0, DIMENSIONS.WIDTH])
-      .domain([new Date("2015-12-01"), new Date("2015-12-04")]);
+      .domain(d3.extent(dates));
     var yScale = d3.scale.linear()
       .range([DIMENSIONS.HEIGHT, 0])
       .domain([0, 10]);
