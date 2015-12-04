@@ -92,7 +92,11 @@ var DIMENSIONS = {
   WIDTH: 600, HEIGHT: 500,
   MARGINS: {top: 20, right: 20, bottom: 20, left: 20 }
 };
-svg.attr("width", DIMENSIONS.WIDTH).attr("height", DIMENSIONS.HEIGHT);
+svg
+  .attr("width", DIMENSIONS.WIDTH + DIMENSIONS.MARGINS.left + DIMENSIONS.MARGINS.right)
+  .attr("height", DIMENSIONS.HEIGHT + DIMENSIONS.MARGINS.top + DIMENSIONS.MARGINS.bottom)
+  .append(g)
+    .attr("transform", "translate(" + DIMENSIONS.MARGINS.left + "," + DIMENSIONS.MARGINS.top + ")");
 var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
 var series = d3.scale.category10()
 var line = d3.svg.line()
@@ -112,20 +116,19 @@ Q.all(stations.map(getStationData))
         "level": x.processed_values};
     });
     var xScale = d3.time.scale()
-      .range([DIMENSIONS.MARGINS.left, DIMENSIONS.WIDTH - DIMENSIONS.MARGINS.right])
+      .range([0, DIMENSIONS.WIDTH])
       .domain([new Date("2015-12-01"), new Date("2015-12-04")]);
     var yScale = d3.scale.linear()
-      .range([DIMENSIONS.HEIGHT - DIMENSIONS.MARGINS.top, DIMENSIONS.MARGINS.bottom])
+      .range([DIMENSIONS.HEIGHT, 0])
       .domain([0, 10]);
     var xAxis = d3.svg.axis().scale(xScale);
-    var yAxis = d3.svg.axis().scale(yScale).orient("left");
-    svg.append("svg:g")
+    var yAxis = d3.svg.axis().scale(yScale).tickSize(DIMENSIONS.WIDTH).orient("left");
+    svg.append("g")
       .classed("axis", true)
-      .attr("transform", "translate(0," + (DIMENSIONS.HEIGHT - DIMENSIONS.MARGINS.bottom) + ")")
+      .attr("transform", "translate(0," + (DIMENSIONS.HEIGHT) + ")")
       .call(xAxis);
-    svg.append("svg:g")
+    svg.append("g")
       .classed("axis", true)
-      .attr("transform", "translate(" + (DIMENSIONS.MARGINS.left) + ",0)")
       .call(yAxis);
 
     // series.domain(d3.keys(data.map(function(x) { return x.name; })));
