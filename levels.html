@@ -123,7 +123,7 @@ Q.all(stations.map(getStationData))
     var xAxis = d3.svg.axis().scale(xScale);
     var yAxis = d3.svg.axis().scale(yScale).orient("left");
     svg.append("svg:g")
-      .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom)
+      .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom))
       .call(xAxis);
     svg.append("svg:g")
       .attr("transform", "translate(" + (MARGINS.left) + ",0)")
