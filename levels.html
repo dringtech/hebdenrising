@@ -106,6 +106,7 @@ Q.all(stations.map(getStationData))
   .then(function(result) {
     // console.log(JSON.stringify(result, null, 2));
     var dates = d3.merge(result.map(function(x) { return x.value_timestamps.map(timeParse) } ));
+    var maxLevel = d3.max(result.map(function(x) {return x.site_max}));
     var data = result.map(function(x) {
       return {
         "name": x.external_name,
@@ -118,7 +119,7 @@ Q.all(stations.map(getStationData))
       .domain(d3.extent(dates));
     var yScale = d3.scale.linear()
       .range([DIMENSIONS.HEIGHT, 0])
-      .domain([0, 10]);
+      .domain([0, maxLevel]);
     var xAxis = d3.svg.axis().scale(xScale).tickSize(3);
     var yAxis = d3.svg.axis().scale(yScale).tickSize(3).orient("left");
     plot.append("g")
