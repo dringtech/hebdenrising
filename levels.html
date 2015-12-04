@@ -93,7 +93,7 @@ var res = d3.select('div#results')[0];
 var stations = [8097];
 Q.all(stations.map(getStationData))
   .then(function(results) {
-    res.text(results);
+    res.text(JSON.stringify(results,null,2));
     console.log(results);
   });
 </script>
