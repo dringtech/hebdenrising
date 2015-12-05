@@ -110,7 +110,7 @@ var plot = svg
     .attr("transform", "translate(" + DIMENSIONS.MARGINS.left + "," + DIMENSIONS.MARGINS.top + ")");
 var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
 var stations = [5103,5179,5174,5175,5060,5178,5206,5166,5171,5039,5183,5128,5179];
-var color = d3.scale.category20b();
+var color = d3.scale.category20();
 
 Q.all(stations.map(getStationData))
   .then(function(result) {
