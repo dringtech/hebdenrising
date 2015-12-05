@@ -4,6 +4,10 @@
   stroke: gray;
 }
 
+path.series {
+  stroke-width: 2px;
+}
+
 .tick text {
   font-size: 8pt;
   font-weight: lighter;
