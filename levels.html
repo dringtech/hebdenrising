@@ -99,7 +99,6 @@ var plot = svg
   .append("g")
     .attr("transform", "translate(" + DIMENSIONS.MARGINS.left + "," + DIMENSIONS.MARGINS.top + ")");
 var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
-var series = d3.scale.category10()
 var stations = [8205,8343,8097,8048,8152];
 
 Q.all(stations.map(getStationData))
@@ -116,7 +115,7 @@ Q.all(stations.map(getStationData))
     });
     var xScale = d3.time.scale()
       .range([0, DIMENSIONS.WIDTH])
-      .domain(d3.extent(dates));
+      .domain(d3.min(dates), Date());
     var yScale = d3.scale.linear()
       .range([DIMENSIONS.HEIGHT, 0])
       .domain([0, maxLevel]);
@@ -142,15 +141,6 @@ Q.all(stations.map(getStationData))
         .attr('fill', 'none');
     })
 
-    // series.domain(d3.keys(data.map(function(x) { return x.name; })));
-    // var stations = series.domain().map(function(name) {
-    //   return {
-    //     name: name,
-    //     values: data.map(function(d) {
-    //       return {date: d.date, temperature: +d[name]};
-    //     })
-    //   };
-    // });
     res.text("Loaded");
   });
 </script>
