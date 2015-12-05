@@ -157,7 +157,6 @@ Q.all(stations.map(getStationData))
         .attr("height", 10)
         .attr('fill', color(d.id));
       key.append('text')
-      var textLabels = text
         .attr("x", 15)
         .attr("y", 5)
         .text(d.name);
