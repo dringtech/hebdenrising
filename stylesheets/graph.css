@@ -17,3 +17,8 @@ path.series {
   font-size: 8pt;
   dominant-baseline: central;
 }
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
