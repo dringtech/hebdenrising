@@ -115,7 +115,7 @@ Q.all(stations.map(getStationData))
     });
     var xScale = d3.time.scale()
       .range([0, DIMENSIONS.WIDTH])
-      .domain([d3.min(dates), Date()]);
+      .domain(d3.extent(dates));
     var yScale = d3.scale.linear()
       .range([DIMENSIONS.HEIGHT, 0])
       .domain([0, maxLevel]);
