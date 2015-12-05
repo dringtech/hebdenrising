@@ -148,7 +148,7 @@ Q.all(stations.map(getStationData))
         .attr('data-legend', d.name)
         .classed('series', true);
       var key = legend.append('g')
-        .attr('transform', 'translate(0,' + (i * 10) + 5 + ')');
+        .attr('transform', 'translate(0,' + (i * 10) + 5 + 'px)');
       key.append('rect')
         .attr("x", 0)
         .attr("y", 0)
