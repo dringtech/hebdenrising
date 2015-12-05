@@ -147,7 +147,7 @@ Q.all(stations.map(getStationData))
 
     var legend = plot.append('g')
       .classed('legend', true)
-      .attr("transform","translate(50,30)");
+      .attr("transform","translate(20,10)");
 
     data.forEach(function (d, i) {
       console.log(i);
@@ -159,7 +159,7 @@ Q.all(stations.map(getStationData))
         .attr('data-legend', d.name)
         .classed('series', true);
       var key = legend.append('g')
-        .attr('transform', 'translate(0,' + (i * 15) + ')');
+        .attr('transform', 'translate(0,' + (i * 12) + ')');
       key.append('rect')
         .attr("x", 0)
         .attr("y", 0)
