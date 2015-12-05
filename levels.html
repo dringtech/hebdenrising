@@ -115,6 +115,7 @@ Q.all(stations.map(getStationData))
       };
     });
     color.domain(data.map(function (x) { return x.id }));
+    console.log(color.domain());
     var xScale = d3.time.scale()
       .range([0, DIMENSIONS.WIDTH])
       .domain(d3.extent(dates));
