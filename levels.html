@@ -100,6 +100,7 @@ var plot = svg
     .attr("transform", "translate(" + DIMENSIONS.MARGINS.left + "," + DIMENSIONS.MARGINS.top + ")");
 var timeParse = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ").parse
 var stations = [8205,8343,8097,8048,8152];
+var color = d3.scale.category10();
 
 Q.all(stations.map(getStationData))
   .then(function(result) {
@@ -113,6 +114,7 @@ Q.all(stations.map(getStationData))
         "points": d3.zip( x.value_timestamps.map(timeParse), x.processed_values )
       };
     });
+    color.domain(data.map(function (x) { return x.id }));
     var xScale = d3.time.scale()
       .range([0, DIMENSIONS.WIDTH])
       .domain(d3.extent(dates));
@@ -136,7 +138,7 @@ Q.all(stations.map(getStationData))
     data.map(function (d) {
       plot.append('path')
         .attr('d', lineGen(d.points))
-        .attr('stroke', 'green')
+        .attr('stroke', function(d) { return color(d.id); })
         .attr('stroke-width', 1)
         .attr('fill', 'none');
     })
