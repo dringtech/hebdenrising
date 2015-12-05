@@ -140,6 +140,7 @@ Q.all(stations.map(getStationData))
       .attr("transform","translate(50,30)");
 
     data.forEach(function (d, i) {
+      console.log(i);
       plot.append('path')
         .attr('d', lineGen(d.points))
         .attr('stroke', color(d.id))
@@ -148,7 +149,7 @@ Q.all(stations.map(getStationData))
         .attr('data-legend', d.name)
         .classed('series', true);
       var key = legend.append('g')
-        .attr('transform', 'translate(0,' + (i * 10) + 5 + 'px)');
+        .attr('transform', 'translate(0,' + (i * 10) + 5 + ')');
       key.append('rect')
         .attr("x", 0)
         .attr("y", 0)
