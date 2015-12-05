@@ -137,6 +137,7 @@ Q.all(stations.map(getStationData))
         .y(function(d) { return yScale(d[1]); });
 
     data.map(function (d) {
+      console.log(color(d.id));
       plot.append('path')
         .attr('d', lineGen(d.points))
         .attr('stroke', function(d) { return color(d.id); })
