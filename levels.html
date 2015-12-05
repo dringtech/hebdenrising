@@ -148,12 +148,12 @@ Q.all(stations.map(getStationData))
         .attr('data-legend', d.name)
         .classed('series', true);
       var key = legend.append('g')
-        .attr('transform', '[0,' + i * 20 + ']');
+        .attr('transform', 'translate(0,' + (i * 10) + 5 + ')');
       key.append('rect')
         .attr("x", 0)
         .attr("y", 0)
-        .attr("width", 20)
-        .attr("height", 20)
+        .attr("width", 10)
+        .attr("height", 10)
         .attr('fill', color(d.id));
     });
 
