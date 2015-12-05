@@ -12,3 +12,8 @@ path.series {
   font-size: 8pt;
   font-weight: lighter;
 }
+
+.legend text {
+  font-size: 8pt;
+  dominant-baseline: central;
+}
