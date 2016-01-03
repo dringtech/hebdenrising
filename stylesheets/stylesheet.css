@@ -1,3 +1,7 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
 /*******************************************************************************
 Slate Theme for GitHub Pages
 by Jason Costello, @jsncostello
@@ -423,3 +427,8 @@ Small Device Styles
   }
 
 }
+
+@import
+        "github",
+        "custom"
+;
