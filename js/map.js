@@ -37,15 +37,18 @@ var geoJsonise = function(input) {
   var output = {
     "type":"featureCollection", "features": []
   };
-  output.features = input.map(function(row) {
-    var g = {type: "Point", coordinates: fixCoordinates(row.location)};
-    var f = {
-      "type": "Feature",
-      "geometry": g,
-      "properties": row
-    };
-    return f;
-  });
+
+  output.features = input
+    .filter(function(x) {return x.location;})
+    .map(function(row) {
+      var g = {type: "Point", coordinates: fixCoordinates(row.location)};
+      var f = {
+        "type": "Feature",
+        "geometry": g,
+        "properties": row
+      };
+      return f;
+    });
   return output;
 };
 
