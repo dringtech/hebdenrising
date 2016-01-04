@@ -1,0 +1,12 @@
+# Site settings
+title: Hebden Rising
+description: > # this means to ignore newlines until "baseurl:"
+  Hebden Bridge will be open!
+baseurl: "" # the subpath of your site, e.g. /blog
+permalink: /updates/:year/:month/:day/:title/
+url: "http://hebdenrising.com" # the base hostname & protocol for your site
+twitter_username: hebdenrising
+admin_twitter: dringtech
+
+# Build settings
+markdown: kramdown
