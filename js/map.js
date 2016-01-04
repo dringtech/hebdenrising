@@ -18,13 +18,28 @@ var inflate = function(rawData) {
   return data;
 };
 
+var itemColor = function(status) {
+  console.log(status);
+  var colors = {
+    "Fully Open": 'green',
+    "Partly Open": 'yellow',
+    "Planned re-opening": 'orange',
+    "Popped-up somewhere else": 'blue',
+    "Closed": 'red'
+  };
+  return colors[status];
+};
+
 var fixCoordinates = function(c) {
-  console.log(c.length);
   if (c.match(/[^\d\.,-]/)) {
     console.log(c);
 
-    // https://maps.googleapis.com/maps/api/geocode/json?address=encodeURIComponent(c)
-    return [0,0];
+    var addr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(c);
+    var geocode = new XMLHttpRequest();
+    geocode.open('GET',addr,false);
+    geocode.send();
+    var loc = JSON.parse(geocode.responseText).results[0].geometry.location
+    return [loc.lng, loc.lat];
   } else {
     return c.split(',').map(Number).reverse();
   }
@@ -64,7 +79,7 @@ var getShopData = function(theMap) {
       color: "#000",
       weight: 1,
       opacity: 1,
-      fillOpacity: 0.5
+      fillOpacity: 0.8
     };
     var popup = function(p) {
       // "name":"Mooch","street_number":"24","street_name":"Market Street","postcode":"HX7 6AA","location":"53.7414348,-2.0164285","date":"2016-01-03","status":"Closed","comments":"","image":"https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_284x96dp.png","type":""
@@ -78,9 +93,9 @@ var getShopData = function(theMap) {
     var options = { name: 'Premises',
                     style: function (feature) {
                       return {
-                        color: 'green',
+                        color: itemColor(feature.properties.status),
                         radius: 10,
-                        stroke: 0
+                        stroke: 1
                       };
                     },
                     onEachFeature: function (feature, layer) {
