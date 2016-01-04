@@ -1,20 +1,97 @@
 var map;
 
+var normalise = function(str) {
+  return str.toLowerCase();
+};
+
+var inflate = function(rawData) {
+  var headers = rawData.columns;
+  var rows = rawData.rows;
+  var data = [];
+  rows.map(function(row) {
+    var obj = {};
+    row.forEach(function(item, col) {
+      obj[normalise(headers[col])] = item;
+    });
+    data.push(obj);
+  });
+  return data;
+};
+
+var fixCoordinates = function(c) {
+  console.log(c.length);
+  if (c.match(/[^\d\.,-]/)) {
+    console.log(c);
+    https://maps.googleapis.com/maps/api/geocode/json?address=encodeURIComponent(c)
+    return [0,0];
+  } else {
+    return c.split(',').map(Number).reverse();
+  }
+};
+
+var geoJsonise = function(input) {
+  var output = {
+    "type":"featureCollection", "features": []
+  };
+  output.features = input.map(function(row) {
+    var g = {type: "Point", coordinates: fixCoordinates(row.location)};
+    var f = {
+      "type": "Feature",
+      "geometry": g,
+      "properties": row
+    };
+    return f;
+  });
+  return output;
+};
+
 var getShopData = function(theMap) {
   var apiKey = "AIzaSyASHll1g8NRvfB-K9Yce_9PTCvzdaDF-wQ";
   var tableId = "1OBwaUJgccpuXMel1Srp_4lVhVFKIAIjSR0QwLvgs";
   var sqlQuery = "SELECT * FROM " + tableId;
   var urlQuery = "https://www.googleapis.com/fusiontables/v2/query?sql="+encodeURIComponent(sqlQuery)+"&key="+apiKey;
-  console.log(urlQuery);
-  /*
-   POST https://www.googleapis.com/fusiontables/v2/query?sql=SELECT+*+from+&key={YOUR_API_KEY}
-  */
+
   var shopReq = new XMLHttpRequest();
   shopReq.open("POST",urlQuery,true);
   shopReq.onreadystatechange = function() {
     if (shopReq.readyState !== XMLHttpRequest.DONE) { return; }
     if (shopReq.status !== 200) { return; }
-    console.log(shopReq.responseText);
+    var shops = geoJsonise(inflate(JSON.parse(shopReq.responseText)));
+    var geojsonMarkerOptions = {
+      radius: 8,
+      // fillColor: "#ff7800",
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.5
+    };
+    var popup = function(p) {
+      // "name":"Mooch","street_number":"24","street_name":"Market Street","postcode":"HX7 6AA","location":"53.7414348,-2.0164285","date":"2016-01-03","status":"Closed","comments":"","image":"https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_284x96dp.png","type":""
+
+      return "<div class='popup'>" +
+        p.name + "<br>" +
+        p.street_number + ", " + p.street_name +
+        "</div>";
+    };
+
+    var options = { name: 'Premises',
+                    style: function (feature) {
+                      return {
+                        color: 'green',
+                        radius: 10,
+                        stroke: 0
+                      };
+                    },
+                    onEachFeature: function (feature, layer) {
+                      layer.bindPopup(popup(feature.properties));
+                    },
+                    pointToLayer: function (feature, latlng) {
+                      return L.circleMarker(latlng, geojsonMarkerOptions);
+                    }
+                  };
+
+    var gj = L.geoJson(shops, options);
+    gj.addTo(theMap);
   };
   shopReq.send();
 };
