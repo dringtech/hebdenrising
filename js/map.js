@@ -19,7 +19,6 @@ var inflate = function(rawData) {
 };
 
 var itemColor = function(status) {
-  console.log(status);
   var colors = {
     "Fully Open": 'green',
     "Partly Open": 'yellow',
@@ -31,18 +30,7 @@ var itemColor = function(status) {
 };
 
 var fixCoordinates = function(c) {
-  if (c.match(/[^\d\.,-]/)) {
-    console.log(c);
-
-    var addr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(c);
-    var geocode = new XMLHttpRequest();
-    geocode.open('GET',addr,false);
-    geocode.send();
-    var loc = JSON.parse(geocode.responseText).results[0].geometry.location
-    return [loc.lng, loc.lat];
-  } else {
-    return c.split(',').map(Number).reverse();
-  }
+  return c.split(',').map(Number).reverse();
 };
 
 var geoJsonise = function(input) {
@@ -64,7 +52,7 @@ var geoJsonise = function(input) {
 var getShopData = function(theMap) {
   var apiKey = "AIzaSyASHll1g8NRvfB-K9Yce_9PTCvzdaDF-wQ";
   var tableId = "1OBwaUJgccpuXMel1Srp_4lVhVFKIAIjSR0QwLvgs";
-  var sqlQuery = "SELECT * FROM " + tableId;
+  var sqlQuery = "SELECT Name, Street_number, Street_name, Postcode, Location, Status, Comments, Image FROM " + tableId;
   var urlQuery = "https://www.googleapis.com/fusiontables/v2/query?sql="+encodeURIComponent(sqlQuery)+"&key="+apiKey;
 
   var shopReq = new XMLHttpRequest();
@@ -75,18 +63,17 @@ var getShopData = function(theMap) {
     var shops = geoJsonise(inflate(JSON.parse(shopReq.responseText)));
     var geojsonMarkerOptions = {
       radius: 8,
-      // fillColor: "#ff7800",
       color: "#000",
       weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
+      opacity: 0.7,
+      fillOpacity: 0.6
     };
     var popup = function(p) {
       // "name":"Mooch","street_number":"24","street_name":"Market Street","postcode":"HX7 6AA","location":"53.7414348,-2.0164285","date":"2016-01-03","status":"Closed","comments":"","image":"https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_284x96dp.png","type":""
 
       return "<div class='popup'>" +
         p.name + "<br>" +
-        p.street_number + ", " + p.street_name +
+        p.street_number + " " + p.street_name +
         "</div>";
     };
 
@@ -192,7 +179,7 @@ var init_map = function() {
         color: "#000",
         weight: 1,
         opacity: 1,
-        fillOpacity: 0.8
+        fillOpacity: 0.5
     };
 
     function shopPopup(feature, layer) {
