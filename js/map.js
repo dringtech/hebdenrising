@@ -22,7 +22,8 @@ var fixCoordinates = function(c) {
   console.log(c.length);
   if (c.match(/[^\d\.,-]/)) {
     console.log(c);
-    https://maps.googleapis.com/maps/api/geocode/json?address=encodeURIComponent(c)
+
+    // https://maps.googleapis.com/maps/api/geocode/json?address=encodeURIComponent(c)
     return [0,0];
   } else {
     return c.split(',').map(Number).reverse();
