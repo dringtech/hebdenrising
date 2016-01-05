@@ -48,7 +48,9 @@ var addDataToMap = function(data) {
 
     return "<div class='popup'>" +
       p.name + "<br>" +
-      p.street_number + " " + p.street_name +
+      "<div class='address'>" + p.street_number + " " + p.street_name + "<div>" +
+      "<img src='"+ p.image + "'></img>" +
+      "<div class='comments'>" + p.comments + "</div>" +
       "</div>";
   };
 
