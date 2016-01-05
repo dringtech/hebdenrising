@@ -113,9 +113,15 @@ var init_map = function(home, initial_zoom) {
     };
     goHome();
 
-    var stamenLayerName = 'watercolor'; // 'watercolor'; // 'toner';
-    var stamenLayer = new L.StamenTileLayer(stamenLayerName, {opacity: 0.5});
-    map.addLayer( stamenLayer );
+    var watercolor = new L.StamenTileLayer("watercolor");
+    var toner = new L.StamenTileLayer("toner");
+    var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+    var control = new L.control.layers({"Stamen Watercolor": watercolor, "Stamen Toner": toner, "Open Street Map": osm}, {}, {autoZIndex: false, collapsed: true});
+
+    map.addLayer(watercolor);
+    control.addTo(map);
 
     // var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     // var osmAttrib='Map data Â© OpenStreetMap contributors';
