@@ -76,7 +76,7 @@ var addDataToMap = function(data) {
   gj.addTo(map);
 }
 
-var init_map = function(home) {
+var init_map = function(home, initial_zoom) {
     map = new L.Map('map');
 
     findMe = function(e) {
@@ -109,7 +109,7 @@ var init_map = function(home) {
         }
     };
     goHome = function() {
-        map.setView(home, 17);
+        map.setView(home, initial_zoom);
     };
     goHome();
 
