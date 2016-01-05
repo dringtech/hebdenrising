@@ -1,0 +1,49 @@
+---
+layout: page
+fusion:
+    key: "AIzaSyASHll1g8NRvfB-K9Yce_9PTCvzdaDF-wQ"
+    table: "1OBwaUJgccpuXMel1Srp_4lVhVFKIAIjSR0QwLvgs"
+---
+
+<table>
+  <thead>
+    <th>
+      Shop
+    </th>
+    <th>
+      Address
+    </th>
+    <th>
+      Status
+    </th>
+    <th>
+      Comments
+    </th>
+  </thead>
+  <tbody id="shops">
+  </tbody>
+</table>
+
+<script type='text/javascript' src='/js/data.js'></script>
+<script type='text/javascript'>
+var loadTable = function(data) {
+  var table = document.getElementById("shops");
+  var addCell = function(row, content) {
+    var cell = row.insertCell();
+    cell.innerHTML = content;
+  };
+  var addRow = function(rowData) {
+    var row = table.insertRow();
+    addCell(row, rowData["name"]);
+    addCell(row, rowData["street_number"] + " " + rowData["street_name"] + " ");
+    addCell(row, rowData["status"]);
+    addCell(row, rowData["comments"]);
+  }
+  var data = inflate(JSON.parse(data));
+  data.forEach(addRow);
+}
+window.onload = function() {
+  getShopData("{{ page.fusion.key }}", "{{ page.fusion.table }}", loadTable);
+}
+
+</script>

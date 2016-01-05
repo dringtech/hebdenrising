@@ -1,3 +1,7 @@
+var normalise = function(str) {
+  return str.toLowerCase();
+};
+
 var inflate = function(rawData) {
   var headers = rawData.columns;
   var rows = rawData.rows;

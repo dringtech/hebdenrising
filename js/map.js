@@ -1,9 +1,5 @@
 var map;
 
-var normalise = function(str) {
-  return str.toLowerCase();
-};
-
 var itemColor = function(status) {
   var colors = {
     "Fully Open": 'green',
