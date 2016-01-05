@@ -44,12 +44,10 @@ var addDataToMap = function(data) {
     fillOpacity: 0.6
   };
   var popup = function(p) {
-    // "name":"Mooch","street_number":"24","street_name":"Market Street","postcode":"HX7 6AA","location":"53.7414348,-2.0164285","date":"2016-01-03","status":"Closed","comments":"","image":"https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_284x96dp.png","type":""
-
+    var img = p.image?"<img src='" + p.image + "'></img>":"";
     return "<div class='popup'>" +
       p.name + "<br>" +
-      "<div class='address'>" + p.street_number + " " + p.street_name + "<div>" +
-      "<img src='"+ p.image + "'></img>" +
+      "<div class='address'>" + p.street_number + " " + p.street_name + "<div>" + img +
       "<div class='comments'>" + p.comments + "</div>" +
       "</div>";
   };
@@ -57,9 +55,7 @@ var addDataToMap = function(data) {
   var options = { name: 'Premises',
                   style: function (feature) {
                     return {
-                      color: itemColor(feature.properties.status),
-                      radius: 10,
-                      stroke: 1
+                      color: itemColor(feature.properties.status)
                     };
                   },
                   onEachFeature: function (feature, layer) {
@@ -74,7 +70,7 @@ var addDataToMap = function(data) {
 
   var gj = L.geoJson(shops, options);
   gj.addTo(map);
-}
+};
 
 var init_map = function(home, initial_zoom) {
     map = new L.Map('map');
