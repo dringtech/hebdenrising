@@ -5,7 +5,7 @@ var itemColor = function(status) {
     "Fully Open": 'green',
     "Partly Open": 'yellow',
     "Planned re-opening": 'orange',
-    "Popped-up somewhere else": 'blue',
+    "Popped-up elsewhere": 'blue',
     "Closed": 'red'
   };
   return colors[status];
