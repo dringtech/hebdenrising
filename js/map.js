@@ -64,6 +64,8 @@ var addDataToMap = function(data) {
                   },
                   onEachFeature: function (feature, layer) {
                     layer.bindPopup(popup(feature.properties));
+                    layer.on('mouseover', function(e) { this.openPopup(); });
+                    layer.on('mouseout', function(e) { this.closePopup(); });
                   },
                   pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
