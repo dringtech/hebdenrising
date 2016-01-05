@@ -52,7 +52,45 @@ var geoJsonise = function(input) {
   return output;
 };
 
-var getShopData = function(theMap) {
+var addDataToMap = function(data) {
+  var shops = geoJsonise(inflate(JSON.parse(data)));
+  var geojsonMarkerOptions = {
+    radius: 8,
+    color: "#000",
+    weight: 1,
+    opacity: 0.7,
+    fillOpacity: 0.6
+  };
+  var popup = function(p) {
+    // "name":"Mooch","street_number":"24","street_name":"Market Street","postcode":"HX7 6AA","location":"53.7414348,-2.0164285","date":"2016-01-03","status":"Closed","comments":"","image":"https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_284x96dp.png","type":""
+
+    return "<div class='popup'>" +
+      p.name + "<br>" +
+      p.street_number + " " + p.street_name +
+      "</div>";
+  };
+
+  var options = { name: 'Premises',
+                  style: function (feature) {
+                    return {
+                      color: itemColor(feature.properties.status),
+                      radius: 10,
+                      stroke: 1
+                    };
+                  },
+                  onEachFeature: function (feature, layer) {
+                    layer.bindPopup(popup(feature.properties));
+                  },
+                  pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                  }
+                };
+
+  var gj = L.geoJson(shops, options);
+  gj.addTo(map);
+}
+
+var getShopData = function(callback) {
   var apiKey = "AIzaSyASHll1g8NRvfB-K9Yce_9PTCvzdaDF-wQ";
   var tableId = "1OBwaUJgccpuXMel1Srp_4lVhVFKIAIjSR0QwLvgs";
   var sqlQuery = "SELECT Name, Street_number, Street_name, Postcode, Location, Status, Comments, Image FROM " + tableId;
@@ -63,41 +101,7 @@ var getShopData = function(theMap) {
   shopReq.onreadystatechange = function() {
     if (shopReq.readyState !== XMLHttpRequest.DONE) { return; }
     if (shopReq.status !== 200) { return; }
-    var shops = geoJsonise(inflate(JSON.parse(shopReq.responseText)));
-    var geojsonMarkerOptions = {
-      radius: 8,
-      color: "#000",
-      weight: 1,
-      opacity: 0.7,
-      fillOpacity: 0.6
-    };
-    var popup = function(p) {
-      // "name":"Mooch","street_number":"24","street_name":"Market Street","postcode":"HX7 6AA","location":"53.7414348,-2.0164285","date":"2016-01-03","status":"Closed","comments":"","image":"https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_284x96dp.png","type":""
-
-      return "<div class='popup'>" +
-        p.name + "<br>" +
-        p.street_number + " " + p.street_name +
-        "</div>";
-    };
-
-    var options = { name: 'Premises',
-                    style: function (feature) {
-                      return {
-                        color: itemColor(feature.properties.status),
-                        radius: 10,
-                        stroke: 1
-                      };
-                    },
-                    onEachFeature: function (feature, layer) {
-                      layer.bindPopup(popup(feature.properties));
-                    },
-                    pointToLayer: function (feature, latlng) {
-                      return L.circleMarker(latlng, geojsonMarkerOptions);
-                    }
-                  };
-
-    var gj = L.geoJson(shops, options);
-    gj.addTo(theMap);
+    callback(shopReq.responseText);
   };
   shopReq.send();
 };
@@ -174,7 +178,7 @@ var init_map = function() {
     // var geoJsonShops = new XMLHttpRequest();
     // geoJsonShops.open("GET","/api/shop/geojson/",false);
     // geoJsonShops.send();
-    getShopData(map);
+    getShopData(addDataToMap);
 
     var geojsonMarkerOptions = {
         radius: 8,
