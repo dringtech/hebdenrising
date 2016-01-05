@@ -1,9 +1,20 @@
 ---
 layout: default
+fusion:
+    key: "AIzaSyASHll1g8NRvfB-K9Yce_9PTCvzdaDF-wQ"
+    table: "1OBwaUJgccpuXMel1Srp_4lVhVFKIAIjSR0QwLvgs"
 ---
 
 <div id="map" class="map"></div>
 
 <script src="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet-src.js"></script>
 <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+<script type='text/javascript' src='/js/data.js'></script>
 <script type='text/javascript' src='/js/map.js'></script>
+<script type='text/javascript'>
+window.onload = function() {
+  var hebden = [53.742, -2.014]; // Somewhere in the centre of Hebden Bridges
+  init_map(hebden);
+  getShopData("{{ page.fusion.key }}", "{{ page.fusion.table }}", addDataToMap);
+}
+</script>

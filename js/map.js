@@ -4,20 +4,6 @@ var normalise = function(str) {
   return str.toLowerCase();
 };
 
-var inflate = function(rawData) {
-  var headers = rawData.columns;
-  var rows = rawData.rows;
-  var data = [];
-  rows.map(function(row) {
-    var obj = {};
-    row.forEach(function(item, col) {
-      obj[normalise(headers[col])] = item;
-    });
-    data.push(obj);
-  });
-  return data;
-};
-
 var itemColor = function(status) {
   var colors = {
     "Fully Open": 'green',
@@ -90,26 +76,8 @@ var addDataToMap = function(data) {
   gj.addTo(map);
 }
 
-var getShopData = function(callback) {
-  var apiKey = "AIzaSyASHll1g8NRvfB-K9Yce_9PTCvzdaDF-wQ";
-  var tableId = "1OBwaUJgccpuXMel1Srp_4lVhVFKIAIjSR0QwLvgs";
-  var sqlQuery = "SELECT Name, Street_number, Street_name, Postcode, Location, Status, Comments, Image FROM " + tableId;
-  var urlQuery = "https://www.googleapis.com/fusiontables/v2/query?sql="+encodeURIComponent(sqlQuery)+"&key="+apiKey;
-
-  var shopReq = new XMLHttpRequest();
-  shopReq.open("POST",urlQuery,true);
-  shopReq.onreadystatechange = function() {
-    if (shopReq.readyState !== XMLHttpRequest.DONE) { return; }
-    if (shopReq.status !== 200) { return; }
-    callback(shopReq.responseText);
-  };
-  shopReq.send();
-};
-
-var init_map = function() {
+var init_map = function(home) {
     map = new L.Map('map');
-    // var hebden = new L.LatLng( 53.742, -2.014 ); // Geographical point
-    var hebden = [53.742, -2.014]; // Somewhere in the centre of Hebden Bridges
 
     findMe = function(e) {
         map.locate( {watch: true, maxZoom: 50} );
@@ -141,7 +109,7 @@ var init_map = function() {
         }
     };
     goHome = function() {
-        map.setView(hebden, 17);
+        map.setView(home, 17);
     };
     goHome();
 
@@ -166,28 +134,14 @@ var init_map = function() {
     // );
     // map.addLayer( cloudmadeLayer );
 
-    var pos_marker = new L.Marker( hebden );
-    var acc_marker = new L.Circle( hebden, 10 );
+    var pos_marker = new L.Marker( home );
+    var acc_marker = new L.Circle( home, 10 );
 
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
     map.on('click', onMapClick );
 
     resetPosition();
-
-    // var geoJsonShops = new XMLHttpRequest();
-    // geoJsonShops.open("GET","/api/shop/geojson/",false);
-    // geoJsonShops.send();
-    getShopData(addDataToMap);
-
-    var geojsonMarkerOptions = {
-        radius: 8,
-        // fillColor: "#ff7800",
-        color: "#000",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.5
-    };
 
     function shopPopup(feature, layer) {
         // does this feature have a property named popupContent?
@@ -207,5 +161,3 @@ var init_map = function() {
 
     // L.control.layers(baseLayers, overlays).addTo(map);
 };
-
-window.onload = init_map;
