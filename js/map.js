@@ -41,14 +41,16 @@ var addDataToMap = function(data) {
     color: "#000",
     weight: 1,
     opacity: 0.7,
-    fillOpacity: 0.6
+    fillOpacity: 0.6,
+    riseOnHover: true
   };
   var popup = function(p) {
+    var md = window.markdownit();
     var img = p.image?"<img src='" + p.image + "'></img>":"";
     return "<div class='popup'>" +
       p.name + "<br>" +
       "<div class='address'>" + p.street_number + " " + p.street_name + "<div>" + img +
-      "<div class='comments'>" + p.comments + "</div>" +
+      "<div class='comments'>" + md.render(p.comments) + "</div>" +
       "</div>";
   };
 
@@ -61,7 +63,7 @@ var addDataToMap = function(data) {
                   onEachFeature: function (feature, layer) {
                     layer.bindPopup(popup(feature.properties));
                     layer.on('mouseover', function(e) { this.openPopup(); });
-                    layer.on('mouseout', function(e) { this.closePopup(); });
+                    // layer.on('mouseout', function(e) { this.closePopup(); });
                   },
                   pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
