@@ -12,7 +12,7 @@ var itemColor = function(status) {
 };
 
 var fixCoordinates = function(c) {
-  return c.split(',').map(Number).reverse();
+  return c.split(',').map(parseFloat).reverse();
 };
 
 var geoJsonise = function(input) {
@@ -34,8 +34,20 @@ var geoJsonise = function(input) {
   return output;
 };
 
+var sortShops = function(aFeat, bFeat) {
+  a = aFeat.geometry.coordinates;
+  b = bFeat.geometry.coordinates;
+  console.log(typeof(a[1]));
+  if (a[0] === b[0]) {
+    return a[1] - b[1];
+  }
+  return a[0] - b[0];
+};
+
 var addDataToMap = function(data) {
   var shops = geoJsonise(inflate(JSON.parse(data)));
+  shops.features = shops.features.sort(sortShops);
+
   var geojsonMarkerOptions = {
     radius: 8,
     color: "#000",
