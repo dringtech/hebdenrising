@@ -1,10 +1,10 @@
 #header_wrap .inner {
-  padding: 10px 10px 10px 10px;
+  padding: 0;
 }
 
 .site-nav {
     float: right;
-    line-height: 56px;
+    line-height: $header-height;
 
     .menu-icon {
         display: none;

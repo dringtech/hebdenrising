@@ -18,9 +18,22 @@ html, body { height: 100%; margin: 0; padding: 0; }
 }
 
 .site-title {
+  line-height: $header-height;
+}
+
+.site-title {
   font-size: 24px;
   color: $text-color;
-  &:visited { color: $text-color;}
+  &:visited { color: $text-color; }
+}
+
+.site-nav {
+  color: $text-color;
+  z-index: 2000;
+  a {
+    color: $text-color;
+    &:visited { color: $text-color; }
+  }
 }
 
 .trigger {
@@ -37,9 +50,6 @@ html, body { height: 100%; margin: 0; padding: 0; }
         margin: 0;
         padding: 5px;
         list-style: none;
-        background-color: $background-color;
-        border: $brand-color 1px solid;
-        color: $brand-color;
         display: none;
         position: absolute;
         top: 45px;
@@ -52,10 +62,6 @@ html, body { height: 100%; margin: 0; padding: 0; }
           line-height: 1;
           .page-link {
           }
-        }
-        a {
-          color: inherit;
-          &:visited { color: inherit; }
         }
       }
       &:hover {
@@ -72,7 +78,7 @@ html, body { height: 100%; margin: 0; padding: 0; }
 
 @include media-query($on-palm) {
   .trigger {
-    color: $brand-color;
+    font-size: 20px;
     a {
       color: inherit;
       &:visited {
