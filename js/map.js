@@ -1,12 +1,14 @@
 var map;
 
 var itemColor = function(status) {
+  var s = ['#d7191c','#fdae61','#ffffbf','#abd9e9','#2c7bb6'];
   var colors = {
-    "Fully Open": 'green',
-    "Partly Open": 'yellow',
-    "Planned re-opening": 'orange',
-    "Popped-up elsewhere": 'blue',
-    "Closed": 'red'
+    "Fully Open": s[4],
+    "Partly Open": s[3],
+    "Popped-up elsewhere": s[2],
+    "Planned re-opening": s[1],
+    "Closed": s[0],
+    "": '#aaa'
   };
   return colors[status];
 };
@@ -39,7 +41,7 @@ var sortHoriz = function(a, b) {
 };
 var sortVert = function(a, b) {
   return b.geometry.coordinates[1] - a.geometry.coordinates[1];
-}
+};
 
 var addDataToMap = function(data) {
   var shops = geoJsonise(inflate(JSON.parse(data)));
@@ -47,10 +49,9 @@ var addDataToMap = function(data) {
 
   var geojsonMarkerOptions = {
     radius: 8,
-    color: "#000",
+    color: "#aaa",
     weight: 1,
-    opacity: 0.7,
-    fillOpacity: 0.6,
+    fillOpacity: 0.8,
     riseOnHover: true
   };
   var popup = function(p) {
@@ -81,6 +82,25 @@ var addDataToMap = function(data) {
 
   var gj = L.geoJson(shops, options);
   gj.addTo(map);
+};
+
+var legend = function() {
+  var legend = L.control({position: 'bottomleft'});
+
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    var ul = L.DomUtil.create('ul', 'legend-items');
+
+    div.innerHTML = '<h1>Legend:</h1>';
+
+    ['Fully Open', 'Partly Open', 'Popped-up elsewhere', 'Planned re-opening', 'Closed'].forEach(function(x) {
+      ul.innerHTML += '<li><svg height="20" width="20" viewbox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="' + itemColor(x)  + '"></circle></svg>' + x + '</li>';
+    });
+
+    div.appendChild(ul);
+    return div;
+  };
+  return legend;
 };
 
 var init_map = function(home, initial_zoom) {
@@ -129,6 +149,7 @@ var init_map = function(home, initial_zoom) {
 
     map.addLayer(watercolor);
     control.addTo(map);
+    legend().addTo(map);
 
     // var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     // var osmAttrib='Map data Â© OpenStreetMap contributors';
