@@ -1,5 +1,5 @@
 #header_wrap .inner {
-  padding: 0;
+  padding: 0 20px;
 }
 
 .site-nav {
@@ -56,10 +56,8 @@
         .page-link {
             display: block;
             padding: 5px 10px;
+            text-align: right;
 
-            &:not(:last-child) {
-                margin-right: 0;
-            }
             margin-left: 20px;
         }
     }
