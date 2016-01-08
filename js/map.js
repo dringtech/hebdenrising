@@ -34,19 +34,16 @@ var geoJsonise = function(input) {
   return output;
 };
 
-var sortShops = function(aFeat, bFeat) {
-  a = aFeat.geometry.coordinates;
-  b = bFeat.geometry.coordinates;
-  console.log(typeof(a[1]));
-  if (a[0] === b[0]) {
-    return a[1] - b[1];
-  }
-  return a[0] - b[0];
+var sortHoriz = function(a, b) {
+  return a.geometry.coordinates[0] - b.geometry.coordinates[0];
 };
+var sortVert = function(a, b) {
+  return b.geometry.coordinates[1] - a.geometry.coordinates[1];
+}
 
 var addDataToMap = function(data) {
   var shops = geoJsonise(inflate(JSON.parse(data)));
-  shops.features = shops.features.sort(sortShops);
+  shops.features = shops.features.sort(sortHoriz).sort(sortVert);
 
   var geojsonMarkerOptions = {
     radius: 8,
