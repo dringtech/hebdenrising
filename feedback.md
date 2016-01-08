@@ -1,5 +1,6 @@
 ---
 layout: page
+permalink: /feedback/
 ---
 
 Please let us know if there's any change in the status of the businesses in town.
