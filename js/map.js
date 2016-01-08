@@ -45,7 +45,7 @@ var sortVert = function(a, b) {
 
 var addDataToMap = function(data) {
   var shops = geoJsonise(inflate(JSON.parse(data)));
-  shops.features = shops.features.sort(sortHoriz).sort(sortVert);
+  shops.features = shops.features.sort(sortHoriz);
 
   var geojsonMarkerOptions = {
     radius: 8,
