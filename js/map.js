@@ -42,10 +42,13 @@ var sortHoriz = function(a, b) {
 var sortVert = function(a, b) {
   return b.geometry.coordinates[1] - a.geometry.coordinates[1];
 };
+var sortStatus = function(a, b) {
+  return b.properties.status < a.properties.status;
+};
 
 var addDataToMap = function(data) {
   var shops = geoJsonise(inflate(JSON.parse(data)));
-  shops.features = shops.features.sort(sortHoriz);
+  shops.features = shops.features.sort(sortStatus);
 
   var geojsonMarkerOptions = {
     radius: 8,
