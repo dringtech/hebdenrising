@@ -43,7 +43,15 @@ var sortVert = function(a, b) {
   return b.geometry.coordinates[1] - a.geometry.coordinates[1];
 };
 var sortStatus = function(a, b) {
-  return b.properties.status < a.properties.status;
+  var ordering = {
+    "Fully Open": 1,
+    "Partly Open": 2,
+    "Popped-up elsewhere": 3,
+    "Planned re-opening": 4,
+    "Closed": 5,
+    "": 6
+  };
+  return ordering[a.properties.status] < ordering[b.properties.status];
 };
 
 var addDataToMap = function(data) {
