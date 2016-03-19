@@ -105,7 +105,7 @@ var legend = function() {
     div.innerHTML = '<h1>Legend:</h1>';
 
     ['Fully Open', 'Partly Open', 'Popped-up elsewhere', 'Planned re-opening', 'Closed'].forEach(function(x) {
-      ul.innerHTML += '<li><svg height="20" width="20" viewbox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="' + itemColor(x)  + '"></circle></svg>' + x + '</li>';
+      ul.innerHTML += '<li><svg class="' + x + '" height="20" width="20" viewbox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="' + itemColor(x)  + '"></circle></svg>' + x + '</li>';
     });
 
     div.appendChild(ul);
