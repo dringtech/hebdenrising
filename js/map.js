@@ -60,7 +60,7 @@ var addDataToMap = function(data) {
 
   var geojsonMarkerOptions = {
     radius: 8,
-    color: "#aaa",
+    color: "#2aa",
     weight: 1,
     fillOpacity: 0.8,
     riseOnHover: true
@@ -71,14 +71,14 @@ var addDataToMap = function(data) {
     return "<div class='popup'>" +
       p.name + "<br>" +
       "<div class='address'>" + p.street_number + " " + p.street_name + "<div>" + img +
-      "<div class='comments'>" + md.render(p.comments) + "</div>" +
+      // "<div class='comments'>" + md.render(p.comments) + "</div>" +
       "</div>";
   };
 
   var options = { name: 'Premises',
                   style: function (feature) {
                     return {
-                      color: itemColor(feature.properties.status)
+                      // color: itemColor(feature.properties.status)
                     };
                   },
                   onEachFeature: function (feature, layer) {
@@ -160,7 +160,7 @@ var init_map = function(home, initial_zoom) {
 
     map.addLayer(watercolor);
     control.addTo(map);
-    legend().addTo(map);
+    // legend().addTo(map);
 
     // var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     // var osmAttrib='Map data Â© OpenStreetMap contributors';

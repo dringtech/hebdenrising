@@ -14,12 +14,12 @@ fusion:
     <th>
       Address
     </th>
-    <th>
+    <!-- <th>
       Status
     </th>
     <th>
       Comments
-    </th>
+    </th> -->
   </thead>
   <tbody id="shops">
   </tbody>
@@ -37,8 +37,8 @@ var loadTable = function(data) {
     var row = table.insertRow();
     addCell(row, rowData["name"]);
     addCell(row, rowData["street_number"] + " " + rowData["street_name"] + " ");
-    addCell(row, rowData["status"]);
-    addCell(row, rowData["comments"]);
+    // addCell(row, rowData["status"]);
+    // addCell(row, rowData["comments"]);
   }
   var data = inflate(JSON.parse(data));
   data.forEach(addRow);
