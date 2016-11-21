@@ -25,16 +25,16 @@ Q.all(stations.map(getStationData))
     }));
 
     var maxLevel = d3.max(result.map(function (resultSet) {
-      return resultSet.info.stageScale.scaleMax
-    }))
+      return resultSet.info.stageScale.scaleMax;
+    }));
 
     var data = result.map(function (resultSet) {
       return {
         name: resultSet.info.label + ' on the ' + resultSet.info.riverName,
         id: resultSet.info.RLOIid,
         points: resultSet.data.map(function (reading) {
-          return [timeParse(reading.dateTime), reading.value]
-        })
+          return [timeParse(reading.dateTime), reading.value];
+        }),
       };
     });
 
@@ -65,7 +65,6 @@ Q.all(stations.map(getStationData))
       .attr('transform', 'translate(50,30)');
 
     data.forEach(function (d, i) {
-      console.log(i);
       plot.append('path')
         .attr('d', lineGen(d.points))
         .attr('stroke', color(d.id))
