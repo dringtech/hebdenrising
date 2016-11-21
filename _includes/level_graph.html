@@ -1,0 +1,11 @@
+<svg id='graph'></svg>
+<div id='results'>Loading...</div>
+
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/q.js/1.4.1/q.min.js" charset="utf-8"></script>
+<script>
+var stations = {{ page.stations | jsonify }};
+{% include js/xhr.js %}
+{% include js/getStationData.js %}
+{% include js/stations.js %}
+</script>
