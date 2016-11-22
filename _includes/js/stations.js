@@ -1,5 +1,5 @@
 var svg = d3.select('svg#graph');
-var res = d3.select('div#results');
+
 var DIMENSIONS = {
   WIDTH: 600, HEIGHT: 300,
   MARGINS: { top: 20, right: 20, bottom: 50, left: 50, },
@@ -16,8 +16,6 @@ var color = d3.scale.category10();
 
 Q.all(stations.map(getStationData))
   .then(function handleResult(result) {
-    // console.log(JSON.stringify(result, null, 2));
-
     var dates = d3.merge(result.map(function (resultSet) {
       return resultSet.data.map(function (reading) {
         return timeParse(reading.dateTime);
@@ -86,5 +84,4 @@ Q.all(stations.map(getStationData))
         .text(d.name);
     });
 
-    res.text('Loaded');
   });
