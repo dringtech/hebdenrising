@@ -1,11 +1,12 @@
 var svg = d3.select('svg#graph');
 
 var DIMENSIONS = {
-  WIDTH: 600, HEIGHT: 300,
+  WIDTH: 100%, HEIGHT: 300,
   MARGINS: { top: 20, right: 20, bottom: 50, left: 50, },
 };
 
 var plot = svg
+  .attr('width', DIMENSIONS.WIDTH)
   .attr('height', DIMENSIONS.HEIGHT + DIMENSIONS.MARGINS.top + DIMENSIONS.MARGINS.bottom)
   .append('g')
   .attr('transform', 'translate(' + DIMENSIONS.MARGINS.left + ',' + DIMENSIONS.MARGINS.top + ')');
