@@ -6,7 +6,6 @@ var DIMENSIONS = {
 };
 
 var plot = svg
-  .attr('width', DIMENSIONS.WIDTH + DIMENSIONS.MARGINS.left + DIMENSIONS.MARGINS.right)
   .attr('height', DIMENSIONS.HEIGHT + DIMENSIONS.MARGINS.top + DIMENSIONS.MARGINS.bottom)
   .append('g')
   .attr('transform', 'translate(' + DIMENSIONS.MARGINS.left + ',' + DIMENSIONS.MARGINS.top + ')');
