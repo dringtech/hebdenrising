@@ -1,15 +1,19 @@
 var svg = d3.select('svg#graph');
 
 var DIMENSIONS = {
-  WIDTH: 100%, HEIGHT: 300,
+  WIDTH: 600, HEIGHT: 300,
   MARGINS: { top: 20, right: 20, bottom: 50, left: 50, },
 };
 
 var plot = svg
-  .attr('width', DIMENSIONS.WIDTH)
-  .attr('height', DIMENSIONS.HEIGHT + DIMENSIONS.MARGINS.top + DIMENSIONS.MARGINS.bottom)
-  .append('g')
-  .attr('transform', 'translate(' + DIMENSIONS.MARGINS.left + ',' + DIMENSIONS.MARGINS.top + ')');
+  .attr('viewBox', [
+      -DIMENSIONS.MARGINS.left,
+      -DIMENSIONS.MARGINS.top,
+      DIMENSIONS.WIDTH + DIMENSIONS.MARGINS.left + DIMENSIONS.MARGINS.left,
+      DIMENSIONS.HEIGHT + DIMENSIONS.MARGINS.top + DIMENSIONS.MARGINS.bottom,
+    ].join(' ')
+  )
+  .append('g').attr('id', 'graph');
 
 var timeParse = d3.time.format('%Y-%m-%dT%H:%M:%SZ').parse;
 var color = d3.scale.category10();
