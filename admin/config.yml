@@ -1,0 +1,33 @@
+backend:
+  name: github
+  repo: dringtech/hebdenrising
+  branch: hebdenrising/v3
+  base_url: https://kltfd8s7m9.execute-api.eu-west-2.amazonaws.com
+  auth_endpoint: prod/auth  
+
+media_folder: "media/uploads"
+
+collections:
+  # - name: "posts" # Used in routes, e.g., /admin/collections/blog
+  #   label: "Posts" # Used in the UI
+  #   folder: "_posts/" # The path to the folder where the documents are stored
+  #   create: true # Allow users to create new documents in this collection
+  #   slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md
+  #   fields: # The fields for each document, usually in front matter
+  #     - {label: "Layout", name: "layout", widget: "hidden", default: "post"}
+  #     - {label: "Title", name: "title", widget: "string"}
+  #     - {label: "Publish Date", name: "date", widget: "datetime", format": "ISO_8601"}
+  #     - {label: "Tags", name: "tags", widget: "list"}
+  #     - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "places" # Used in routes, e.g., /admin/collections/blog
+    label: "Places" # Used in the UI
+    label_singular: "Place"
+    folder: "_Places/" # The path to the folder where the documents are stored
+    create: true # Allow users to create new documents in this collection
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Boolean', name: 'boolean', widget: 'boolean', default: true }
+      - { label: 'Map', name: 'map', widget: 'map' }
+      - { label: "Body", name: "body", widget: "text" }
