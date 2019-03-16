@@ -28,6 +28,6 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md
     fields: # The fields for each document, usually in front matter
       - { label: 'Title', name: 'title', widget: 'string' }
-      - { label: 'Boolean', name: 'boolean', widget: 'boolean', default: true }
-      - { label: 'Map', name: 'map', widget: 'map' }
+      - { label: 'Open', name: 'open', widget: 'boolean', default: true }
+      - { label: 'Location', name: 'location', widget: 'map', default: '{ "type": "Point", "coordinates": [-2.0132,53.7417] }' }
       - { label: "Body", name: "body", widget: "text" }
