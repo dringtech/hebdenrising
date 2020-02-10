@@ -1,115 +1,88 @@
-var map;
+((L) => {
+  var map;
 
-var itemColor = function(status) {
-  var s = ['#d7191c','#fdae61','#ffffbf','#abd9e9','#2c7bb6'];
-  var colors = {
-    "Fully Open": s[4],
-    "Partly Open": s[3],
-    "Popped-up elsewhere": s[2],
-    "Planned re-opening": s[1],
-    "Closed": s[0],
-    "": '#aaa'
+  function itemColor(status) {
+    var s = ['#d7191c','#fdae61','#ffffbf','#abd9e9','#2c7bb6'];
+    var colors = {
+      "Fully Open": s[4],
+      "Partly Open": s[3],
+      "Popped-up elsewhere": s[2],
+      "Planned re-opening": s[1],
+      "Closed": s[0],
+      "": '#aaa'
+    };
+    return colors[status];
   };
-  return colors[status];
-};
-
-var fixCoordinates = function(c) {
-  return c.split(',').map(parseFloat).reverse();
-};
-
-var geoJsonise = function(input) {
-  var output = {
-    "type":"featureCollection", "features": []
+  
+  var sortHoriz = function(a, b) {
+    return a.geometry.coordinates[0] - b.geometry.coordinates[0];
   };
-
-  output.features = input
-    .filter(function(x) {return x.location;})
-    .map(function(row) {
-      var g = {type: "Point", coordinates: fixCoordinates(row.location)};
-      var f = {
-        "type": "Feature",
-        "geometry": g,
-        "properties": row
-      };
-      return f;
-    });
-  return output;
-};
-
-var sortHoriz = function(a, b) {
-  return a.geometry.coordinates[0] - b.geometry.coordinates[0];
-};
-var sortVert = function(a, b) {
-  return b.geometry.coordinates[1] - a.geometry.coordinates[1];
-};
-var sortStatus = function(a, b) {
-  var ordering = {
-    "Fully Open": 1,
-    "Partly Open": 2,
-    "Popped-up elsewhere": 3,
-    "Planned re-opening": 4,
-    "Closed": 5,
-    "": 6
+  var sortVert = function(a, b) {
+    return b.geometry.coordinates[1] - a.geometry.coordinates[1];
   };
-  return ordering[a.properties.status] < ordering[b.properties.status];
-};
-
-function addGeojson(data) {
-  data.features = data.features.sort(sortStatus);
-  var geojsonMarkerOptions = {
-    radius: 8,
-    color: "#2aa",
-    weight: 1,
-    fillOpacity: 0.8,
-    riseOnHover: true
+  var sortStatus = function(a, b) {
+    var ordering = {
+      "Fully Open": 1,
+      "Partly Open": 2,
+      "Popped-up elsewhere": 3,
+      "Planned re-opening": 4,
+      "Closed": 5,
+      "": 6
+    };
+    return ordering[a.properties.status] < ordering[b.properties.status];
   };
-  var popup = function(p) {
-    var md = window.markdownit();
-    return `<ul class='popup'><li>${p.comments}</li><li class='address'>${p.name}</li></ul>`;
+  
+  function addGeojson(data) {
+    data.features = data.features.sort(sortStatus);
+    var geojsonMarkerOptions = {
+      radius: 8,
+      color: "#2aa",
+      weight: 1,
+      fillOpacity: 0.8,
+      riseOnHover: true
+    };
+    var popup = function(p) {
+      var md = window.markdownit();
+      return `<ul class='popup'><li>${p.comments}</li><li class='address'>${p.name}</li></ul>`;
+    };
+  
+    var options = {
+      name: 'Premises',
+      style: (feature) => ({
+        // color: itemColor(feature.properties.status)
+      }),
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(popup(feature.properties));
+        layer.on('mouseover', function(e) { this.openPopup(); });
+        // layer.on('mouseout', function(e) { this.closePopup(); });
+      },
+      pointToLayer: (feature, latlng) => L.circleMarker(latlng, geojsonMarkerOptions)
+    };
+  
+    var gj = L.geoJson(data, options);
+    gj.addTo(map);
+  }
+  
+  function legend() {
+    var legend = L.control({position: 'bottomleft'});
+  
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create('div', 'info legend');
+      var ul = L.DomUtil.create('ul', 'legend-items');
+  
+      div.innerHTML = '<h1>Legend:</h1>';
+  
+      ['Fully Open', 'Partly Open', 'Popped-up elsewhere', 'Planned re-opening', 'Closed'].forEach(function(x) {
+        ul.innerHTML += '<li><svg class="' + x + '" height="20" width="20" viewbox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="' + itemColor(x)  + '"></circle></svg>' + x + '</li>';
+      });
+  
+      div.appendChild(ul);
+      return div;
+    };
+    return legend;
   };
-
-  var options = {
-    name: 'Premises',
-    style: (feature) => ({
-      // color: itemColor(feature.properties.status)
-    }),
-    onEachFeature: (feature, layer) => {
-      layer.bindPopup(popup(feature.properties));
-      layer.on('mouseover', function(e) { this.openPopup(); });
-      // layer.on('mouseout', function(e) { this.closePopup(); });
-    },
-    pointToLayer: (feature, latlng) => L.circleMarker(latlng, geojsonMarkerOptions)
-  };
-
-  var gj = L.geoJson(data, options);
-  gj.addTo(map);
-}
-
-var addDataToMap = function(data) {
-  var shops = geoJsonise(inflate(JSON.parse(data)));
-  addGeojson(data);
-};
-
-var legend = function() {
-  var legend = L.control({position: 'bottomleft'});
-
-  legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend');
-    var ul = L.DomUtil.create('ul', 'legend-items');
-
-    div.innerHTML = '<h1>Legend:</h1>';
-
-    ['Fully Open', 'Partly Open', 'Popped-up elsewhere', 'Planned re-opening', 'Closed'].forEach(function(x) {
-      ul.innerHTML += '<li><svg class="' + x + '" height="20" width="20" viewbox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="' + itemColor(x)  + '"></circle></svg>' + x + '</li>';
-    });
-
-    div.appendChild(ul);
-    return div;
-  };
-  return legend;
-};
-
-var init_map = function(home, initial_zoom) {
+  
+  function init(home, initial_zoom) {
     map = new L.Map('map');
 
     findMe = function(e) {
@@ -159,8 +132,8 @@ var init_map = function(home, initial_zoom) {
       maxZoom: 19
     });
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	    maxZoom: 19,
-	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     var control = new L.control.layers({
       "CartoDB Positron": cartoPositron,
@@ -172,23 +145,6 @@ var init_map = function(home, initial_zoom) {
     control.addTo(map);
     // legend().addTo(map);
 
-    // var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    // var osmAttrib='Map data Â© OpenStreetMap contributors';
-    // var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 12, attribution: osmAttrib});
-    // map.addLayer( osm );
-
-    // var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    // var osmAttrib='Map data Â© openstreetmap contributors';
-    // var osmLayer = new L.TileLayer(osmUrl,{minZoom:8,maxZoom:50,attribution:osmAttrib});
-    // map.addLayer( osmLayer );
-
-    // var cloudmadeLayer = new L.TileLayer(
-    //   'http://{s}.tile.cloudmade.com/{api_key}/{styleId}/256/{z}/{x}/{y}.png',
-    //   { attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery Â© <a href="http://cloudmade.com">CloudMade</a>', maxZoom: 20, },
-    //   { api_key: '22002ecc8b934091a4f9d2b7d4410e5b', styleId: 22677 }
-    // );
-    // map.addLayer( cloudmadeLayer );
-
     var pos_marker = new L.Marker( home );
     var acc_marker = new L.Circle( home, 10 );
 
@@ -199,20 +155,16 @@ var init_map = function(home, initial_zoom) {
     resetPosition();
 
     function shopPopup(feature, layer) {
-        // does this feature have a property named popupContent?
-        if (feature.properties && feature.properties.popupContent) {
-            layer.bindPopup(feature.properties.popupContent);
-        }
-    }
+      // does this feature have a property named popupContent?
+      if (feature.properties && feature.properties.popupContent) {
+          layer.bindPopup(feature.properties.popupContent);
+      }
+  }
+  };
 
-    // var baseLayers = {
-    // //     "Stamen": stamenLayer,
-    // //     "OpenStreetMap": osmLayer
-    // };
-
-    // var overlays = {
-    //     "Shops": shopLayer
-    // };
-
-    // L.control.layers(baseLayers, overlays).addTo(map);
-};
+  const Map = {
+    init,
+    addGeojson,
+  };
+  window.Map = Map;
+})(L);
