@@ -18,7 +18,7 @@ stylesheets:
 window.addEventListener('DOMContentLoaded', () => {
   var hebden = [53.742, -2.014]; // Somewhere in the centre of Hebden Bridges
   Map.init(hebden, 15);
-  fetch('//cdn.jsdelivr.net/gh/dringtech/hebden-places@master/src/hebden-places.geojson')
+  fetch('//raw.githubusercontent.com/dringtech/hebden-places/master/src/hebden-places.geojson)
     .then(r => r.json()).then(Map.addGeojson)
 });
 </script>
