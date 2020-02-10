@@ -29,12 +29,12 @@ var dataFactory = function dataFactory(base, suffix) {
 var getStationData = function getStationData(id) {
 
   var getReadings = dataFactory(
-    'http://environment.data.gov.uk/flood-monitoring/id/stations/',
+    '//environment.data.gov.uk/flood-monitoring/id/stations/',
     '/readings?_sorted&parameter=level'
   );
 
   var getStationInfo = dataFactory(
-    'http://environment.data.gov.uk/flood-monitoring/id/stations/',
+    '//environment.data.gov.uk/flood-monitoring/id/stations/',
     ''
   );
 
