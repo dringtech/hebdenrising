@@ -13,12 +13,12 @@ stylesheets:
 
 <script src="//unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/markdown-it/5.0.3/markdown-it.min.js'></script>
-<script type='text/javascript' src='/js/data.js'></script>
 <script type='text/javascript' src='/js/map.js'></script>
 <script type='text/javascript'>
 window.onload = function() {
   var hebden = [53.742, -2.014]; // Somewhere in the centre of Hebden Bridges
   init_map(hebden, 15);
-  getShopData("{{ page.fusion.key }}", "{{ page.fusion.table }}", addDataToMap);
+  fetch('//cdn.jsdelivr.net/gh/dringtech/hebden-places@master/src/hebden-places.geojson')
+    .then(r => r.json()).then(addGeojson)
 }
 </script>

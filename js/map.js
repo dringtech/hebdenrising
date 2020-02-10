@@ -54,10 +54,8 @@ var sortStatus = function(a, b) {
   return ordering[a.properties.status] < ordering[b.properties.status];
 };
 
-var addDataToMap = function(data) {
-  var shops = geoJsonise(inflate(JSON.parse(data)));
-  shops.features = shops.features.sort(sortStatus);
-
+function addGeojson(data) {
+  data.features = data.features.sort(sortStatus);
   var geojsonMarkerOptions = {
     radius: 8,
     color: "#2aa",
@@ -67,32 +65,29 @@ var addDataToMap = function(data) {
   };
   var popup = function(p) {
     var md = window.markdownit();
-    var img = p.image?"<img src='" + p.image + "'></img>":"";
-    return "<div class='popup'>" +
-      p.name + "<br>" +
-      "<div class='address'>" + p.street_number + " " + p.street_name + "<div>" + img +
-      // "<div class='comments'>" + md.render(p.comments) + "</div>" +
-      "</div>";
+    return `<ul class='popup'><li>${p.comments}</li><li class='address'>${p.name}</li></ul>`;
   };
 
-  var options = { name: 'Premises',
-                  style: function (feature) {
-                    return {
-                      // color: itemColor(feature.properties.status)
-                    };
-                  },
-                  onEachFeature: function (feature, layer) {
-                    layer.bindPopup(popup(feature.properties));
-                    layer.on('mouseover', function(e) { this.openPopup(); });
-                    // layer.on('mouseout', function(e) { this.closePopup(); });
-                  },
-                  pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, geojsonMarkerOptions);
-                  }
-                };
+  var options = {
+    name: 'Premises',
+    style: (feature) => ({
+      // color: itemColor(feature.properties.status)
+    }),
+    onEachFeature: (feature, layer) => {
+      layer.bindPopup(popup(feature.properties));
+      layer.on('mouseover', function(e) { this.openPopup(); });
+      // layer.on('mouseout', function(e) { this.closePopup(); });
+    },
+    pointToLayer: (feature, latlng) => L.circleMarker(latlng, geojsonMarkerOptions)
+  };
 
-  var gj = L.geoJson(shops, options);
+  var gj = L.geoJson(data, options);
   gj.addTo(map);
+}
+
+var addDataToMap = function(data) {
+  var shops = geoJsonise(inflate(JSON.parse(data)));
+  addGeojson(data);
 };
 
 var legend = function() {
@@ -155,22 +150,25 @@ var init_map = function(home, initial_zoom) {
       attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       subdomains: 'abcd',
       minZoom: 1,
-      maxZoom: 16,
+      maxZoom: 18,
       ext: 'jpg'
     });
-    var toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    var cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: 'abcd',
-      minZoom: 0,
-      maxZoom: 20,
-      ext: 'png'
+      maxZoom: 19
     });
-    var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	    maxZoom: 19,
+	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
-    var control = new L.control.layers({"Stamen Watercolor": watercolor, "Stamen Toner": toner, "Open Street Map": osm}, {}, {autoZIndex: false, collapsed: true});
+    var control = new L.control.layers({
+      "CartoDB Positron": cartoPositron,
+      "Stamen Watercolor": watercolor,
+      "Open Street Map": osm
+    }, {}, {autoZIndex: false, collapsed: true});
 
-    map.addLayer(watercolor);
+    map.addLayer(cartoPositron);
     control.addTo(map);
     // legend().addTo(map);
 
